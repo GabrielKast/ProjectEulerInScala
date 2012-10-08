@@ -40,7 +40,29 @@ object Euler{
     nthPrime(nth -1 , 3)
   }
 
+
+  def problem8(d :String) :Int= {
+    val digits = """\D+""".r.replaceAllIn(d, m => "").toCharArray
+    def maxOfFive(max :Int, digits :Array[Char]) :Int = 
+      if (digits.length <5) max
+      else maxOfFive(math.max(max, digits.take(5).foldLeft(1)((m, x) => m*(x -'0'))),
+		     digits.tail)
+    maxOfFive(0, digits)
+  }
+
+  def problem9() :Long= {
+    val total = 1000
+    List.range(total, 1, -1).map( z => List.range(1, z/2.toInt).map( x => (x, total - x - z, z) ).filter(tuple =>tuple match { case (x, y, z) => x*x + y*y == z*z })).filter(! _.isEmpty) match { case List(List((x, y, z))) => x*y*z case _ => throw new IllegalStateException }
+    
+  }
+
+  def problem10(n :Int) :Long={
+    List.range(3L, n, 2).foldLeft(2L) { (x, y) => if (isPrime(y)) x+y else x }
+    // (2L :: List.range(3L, n, 2)).reduceLeft{ (x, y) => if (isPrime(y)) x+y else x }
+    // (2L::List.range(3L, n, 2)).filter( x => isPrime (x)).sum
+  }
 }
+
 
 
 object utils {

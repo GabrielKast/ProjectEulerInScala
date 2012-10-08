@@ -54,6 +54,13 @@ What is the 10 001st prime number?
    Find the greatest product of five consecutive digits in the 1000-digit number.
    */
   test("8. Find the greatest product of five consecutive digits in the 1000-digit number.") {
+    assert(problem8("123456543") === 4*5*6*5*4)
+
+    assert(problem8("""
+		    12345
+		    6543
+		    """) === 4*5*6*5*4)
+
     val digits= """
     73167176531330624919225119674426574742355349194934
     96983520312774506326239578318016984801869478851843
@@ -76,28 +83,33 @@ What is the 10 001st prime number?
     05886116467109405077541002256983155200055935729725
     71636269561882670428252483600823257530420752963450
     """
-    
-
+    assert(problem8(digits) === 40824)
+  }
 /*
  *
  * 
 
 A Pythagorean triplet is a set of three natural numbers, a < b < c, for which,
-a2 + b2 = c2
+a^2 + b^2 = c^2
 
-For example, 32 + 42 = 9 + 16 = 25 = 52.
+For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2.
 
 There exists exactly one Pythagorean triplet for which a + b + c = 1000.
 Find the product abc.
-
- *
  */
+  test("Find the only Pythagorean triplet, {a, b, c}, for which a^2 + b^2 + c^2 = 1000.") {
+    assert(problem9() === 31875000) // 200,375,425
+  }
+
+
  /* Problem10
   * The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
-
-Find the sum of all the primes below two million.
+  * Find the sum of all the primes below two million.
 */
-
+  test("10. Find the sum of all the primes below two million.") {
+    assert(problem10(10)===17)
+    assert(problem10(2000000) === 142913828922l)
+  }
 }
 
 
