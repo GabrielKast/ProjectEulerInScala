@@ -61,8 +61,60 @@ object Euler{
     // (2L :: List.range(3L, n, 2)).reduceLeft{ (x, y) => if (isPrime(y)) x+y else x }
     // (2L::List.range(3L, n, 2)).filter( x => isPrime (x)).sum
   }
+
+
+  def problem11(square:Array[Array[Int]]) : Long= {
+    val lineLength = 4
+    val size = square.length // Let's assume the grid is a square
+    val directions = List ((1,0), (1,1), (0, 1), (-1, 1), (-1, 0))
+    def isOut(x :Int, xx :Int) = (x+lineLength*xx<0 || x+lineLength*xx>size)
+    def findMax(point :(Int, Int), max :Long, direction :(Int, Int)) =
+      (point, direction) match {
+	case ((x, y), (dx, dy)) if isOut(x, dx) || isOut(y, dy) => max
+	case ((x, y), (dx, dy)) =>
+	  val tmpMax :Long = List.range(0, lineLength).foldLeft(1)((acc, d) => acc * square(x + d*dx)(y+d*dy) )
+	  if (tmpMax>max) tmpMax else max
+	case _ => throw new IllegalStateException
+      }
+
+    val points = List.range(0, size).map( y => List.range(0, size).map( x=> (x, y)) ).flatten
+    
+    points.foldLeft(0L)( (max, point) => directions.foldLeft(max)( (m, direction) => findMax(point, m, direction)))
+  }
+
+  // // Too brutal. Does not work for nb=500
+  // def problem12(nb :Int) :Long= {
+  //   def nbDivisors(n :Long) :Int = (1L to n).filter(n % _ ==0).length
+  //   def solution(nth :Long, total :Long) :Long = {
+  //     if (nth % 100000==0) println(nth) else 0
+      
+  //     if (nbDivisors(total) > nb) total 
+  //     else if (nth<0) throw new IllegalStateException
+  //     else solution(nth+1, total+nth)
+  //   }
+  //   solution(2L, 1L)
+  // }
+
+  // 
+  def problem27(limit :Int) :Int = {
+    class Result(a :Int, b :Int) {
+      def conseqPrimes(n :Int) :Int= {
+	val fn = n*n+a*n+b
+	if (fn<2 || ! isPrime(fn) ) n else conseqPrimes (n+1) 
+      }
+      val nbConseqPrimes :Int = conseqPrimes(0)
+      override def toString :String="# ("+a+", "+b+") => "+ nbConseqPrimes
+      def product :Int = a*b
+    }
+    val tuples :List[(Int, Int)]= List.range(-limit,limit).map(b => List.range(-limit, limit).map(a =>(a, b))).flatten
+    val result :Result = tuples.map(t => new Result(t._1, t._2)).sortWith( (t1, t2) => t1.nbConseqPrimes > t2.nbConseqPrimes).head
+    result.product
+  }
+
 }
 
+
+  
 
 
 object utils {
